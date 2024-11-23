@@ -1,0 +1,86 @@
+{% extends 'Equipments/base.html' %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Equipment Request</title>
+    
+</head>
+<body>
+    {% block content %}
+    <h1>Request Equipment</h1>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <label for="equipment_type">Equipment Type:</label>
+        <select id="id_equipment_type" name="equipment_type" onchange="updateEquipmentDropdown()">
+            <option value="" selected disabled>Select Equipment Type</option>
+            <option value="GNSS">GNSS</option>
+            <option value="Total Station">Total Station</option>
+            <option value="Level Instrument">Level Instrument</option>
+            <option value="Drone">Drone</option>
+        </select>
+        <br>
+        <br>
+        <label for="equipment">Equipment:</label>
+        <select id="id_equipment" name="equipment">
+            <br>
+          
+            <option value="" selected disabled>Select Equipment</option>
+            {% for equipment in equipment_in_store %}
+                <option value="{{ equipment.id }}">{{ equipment.name }}</option>
+            {% endfor %}
+        </select>
+
+        {% if form.errors %}
+            <div class="error">
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+            <br>
+            <br>
+        <button type="submit">Submit Request</button>
+    </form>
+
+<script type="text/javascript">
+        function updateEquipmentDropdown() {
+            // Get selected equipment type
+            var equipmentType = document.getElementById('id_equipment_type').value;
+
+            // Fetch equipment options dynamically
+            fetch(`/get-equipment-dropdown/?equipment_type=${equipmentType}`)
+                .then(response => response.json())
+                .then(data => {
+                    var dropdown = document.getElementById('id_equipment');
+                    dropdown.innerHTML = ''; // Clear existing options
+                    dropdown.innerHTML = '<option value="" selected disabled>Select Equipment</option>'; // Default option
+
+                    // Populate dropdown with fetched data
+                    data.equipment.forEach(eq => {
+                        var option = document.createElement('option');
+                        option.value = eq.id;
+                        option.textContent = eq.name;
+                        dropdown.appendChild(option);
+                    });
+                });
+        }
+    </script>
+</body>
+    {% endblock content %}
+</html>
