@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -5,28 +6,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Equipment Management System{% endblock %}</title>
-    <!-- Include any global CSS files here -->
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <!-- <li><a href="{% url 'home' %}">Home</a></li> -->
-                <li><a href="{% url 'equipment_request' %}">Request Equipment</a></li>
-                
-            </ul>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Equipment Management</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'equipment_request' %}">Request Equipment</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
+
     <main>
-        {% block content %}
-        <!-- Content specific to each page will be inserted here -->
-        {% endblock %}
+        <!-- Hero Section -->
+        <section class="bg-dark text-white text-center py-5" style="background-image: url('{% static 'images/hero-background.jpg' %}'); background-size: cover; background-position: center;">
+            <div class="container">
+                <h1 class="display-4">Welcome to the Equipment Management System</h1>
+                <p class="lead">Manage and request equipment with ease, anytime, anywhere.</p>
+                <a href="{% url 'equipment_request' %}" class="btn btn-success btn-lg">Request Equipment</a>
+            </div>
+        </section>
+
+        <div class="container mt-5">
+            {% block content %}
+            <!-- Content specific to each page will be inserted here -->
+            {% endblock %}
+        </div>
     </main>
-    <footer>
+
+    <footer class="bg-primary text-white text-center py-3">
         <p>&copy; 2024 Equipment Management System. All Rights Reserved.</p>
     </footer>
-    <!-- Include any global JS files here -->
+
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
+
